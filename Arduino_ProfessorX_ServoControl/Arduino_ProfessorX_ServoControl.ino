@@ -15,9 +15,14 @@ void setup() { // Called only once per startup
 
   myservo.attach(9);        // Attach the servo object to pin 9
   myservo.write(0);         // Initialize servo position to 0
+
+  BLE_Shield.begin(9600);   // Setup the serial port at 9600 bps. This is the BLE Shield default baud rate. 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+   // See if new position data is available
+  if (BLE_Shield.available()) {
+    myservo.write(BLE_Shield.read());  // Write position to servo
+  }
 
 }
