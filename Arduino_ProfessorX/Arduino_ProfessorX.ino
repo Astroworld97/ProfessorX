@@ -1,4 +1,6 @@
 
+//https://www.raywenderlich.com/2164-arduino-tutorial-integrating-bluetooth-le-and-ios-with-swift
+
 // Arduino Bluetooth LE Servo Controlled by iOS
 
 int LED = 13;     // Most Arduino boards have an onboard LED on pin 13
