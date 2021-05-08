@@ -29,11 +29,11 @@ class ViewController: UIViewController {
     positionSlider.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
     positionSlider.frame = CGRect(x: 0.0, y: 0.0, width: 100.0, height: 300.0)
     superView?.addSubview(self.positionSlider)
-    positionSlider.autoresizingMask = [UIViewAutoresizing.flexibleLeftMargin, UIViewAutoresizing.flexibleRightMargin]
+    positionSlider.autoresizingMask = [UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin]
     positionSlider.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
     
     // Set thumb image on slider
-    positionSlider.setThumbImage(UIImage(named: "Bar"), for: UIControlState())
+    positionSlider.setThumbImage(UIImage(named: "Bar"), for: UIControl.State())
     
     // Watch Bluetooth connection
     NotificationCenter.default.addObserver(self, selector: #selector(ViewController.connectionChanged(_:)), name: NSNotification.Name(rawValue: BLEServiceChangedStatusNotification), object: nil)
@@ -56,7 +56,7 @@ class ViewController: UIViewController {
     self.sendPosition(UInt8(sender.value))
   }
   
-  func connectionChanged(_ notification: Notification) {
+    @objc func connectionChanged(_ notification: Notification) {
     // Connection status changed. Indicate on GUI.
     let userInfo = (notification as NSNotification).userInfo as! [String: Bool]
     
@@ -75,13 +75,45 @@ class ViewController: UIViewController {
     });
   }
   
-  func sendPosition(_ position: UInt8) {
     
-    /******** (2) CODE TO BE ADDED *******/
-    
-  }
+    // Valid position range: 0 to 180
+    func sendPosition(_ position: UInt8) {
+      // 1
+      if !allowTX {
+        return
+      }
+      
+      // 2
+      // Validate value
+      if position == lastPosition {
+        return
+      }
+      // 3
+      else if ((position < 0) || (position > 180)) {
+        return
+      }
+      
+      // 4
+      // Send position to BLE Shield (if service exists and is connected)
+      if let bleService = btDiscoverySharedInstance.bleService {
+        bleService.writePosition(position)
+        lastPosition = position
+
+        // 5
+        // Start delay timer
+        allowTX = false
+        if timerTXDelay == nil {
+          timerTXDelay = Timer.scheduledTimer(timeInterval: 0.1,
+            target: self,
+            selector: #selector(ViewController.timerTXDelayElapsed),
+            userInfo: nil,
+            repeats: false)
+        }
+      }
+    }
+
   
-  func timerTXDelayElapsed() {
+    @objc func timerTXDelayElapsed() {
     self.allowTX = true
     self.stopTimerTXDelay()
     

@@ -11,8 +11,8 @@ void setup() {  // Called only once per startup
 }
 
 void loop() { // Continuous loop
-  delay(500);
+  delay(1000);
   digitalWrite(LED, LOW);
-  delay(500);
+  delay(1000);
   digitalWrite(LED, HIGH);
 }
