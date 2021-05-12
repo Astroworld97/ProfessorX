@@ -74,4 +74,41 @@ class ArduinoBluetooth : NSObject, CBPeripheralDelegate{
       }
     }
     
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+      if (peripheral != self.peripheral) {
+        // Wrong Peripheral
+        return
+      }
+      
+      if (error != nil) {
+        return
+      }
+      
+      if let characteristics = service.characteristics {
+        for characteristic in characteristics {
+          if characteristic.uuid == BlackWidowBLETXUUID {
+            self.positionCharacteristic = (characteristic)
+            peripheral.setNotifyValue(true, for: characteristic)
+            
+            // Send notification that Bluetooth is connected and all required characteristics are discovered
+            self.sendBTServiceNotificationWithIsBluetoothConnected(true)
+          }
+        }
+      }
+    }
+    
+    func writePosition(_ position: UInt8) {
+      // See if characteristic has been discovered before writing to it
+      if let positionCharacteristic = self.positionCharacteristic {
+          let data = Data(_: [position])
+          self.peripheral?.writeValue(data, for: positionCharacteristic, type: CBCharacteristicWriteType.withResponse)
+      }
+    }
+    
+    func sendBTServiceNotificationWithIsBluetoothConnected(_ isBluetoothConnected: Bool) {
+      let connectionDetails = ["isConnected": isBluetoothConnected]
+      NotificationCenter.default.post(name: Notification.Name(rawValue: ArduinoBluetoothChangedStatusNotification), object: self, userInfo: connectionDetails)
+    }
+    
 }
