@@ -12,7 +12,7 @@
     - refactor: rewrite part of the code block，no new feature or bug fix
     - perf: impovment of user experience or system performance
     - test: testing, including unit test and intergrated test and UI test
-    - chore: add library, dependencies or tools, change of workflow
+    - chore: add library, dependencies or tools, change of workflow, or an otherwise menial task
     - revert: revert to previous version
 
 **Git branch standardization**
