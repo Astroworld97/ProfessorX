@@ -9,20 +9,21 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        TabView {
-            RemoteControllerView()
-                   .tabItem {
-                       Image(systemName: "gamecontroller.fill")
-                       Text("Move")
-                   }
-
-            MapView()
-                    .edgesIgnoringSafeArea(.all)
-                    .tabItem {
-                       Image(systemName: "map.fill")
-                       Text("Map")
-                   }
-        }
+//        TabView {
+//            RemoteControllerView()
+//                   .tabItem {
+//                       Image(systemName: "gamecontroller.fill")
+//                       Text("Move")
+//                   }
+//
+//            MapView()
+//                    .edgesIgnoringSafeArea(.all)
+//                    .tabItem {
+//                       Image(systemName: "map.fill")
+//                       Text("Map")
+//                   }
+//        }
+        ToolbarTest(messages: ["uno", "dos", "tres"])
     }
 }
 
