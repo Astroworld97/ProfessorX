@@ -23,7 +23,8 @@ struct MainView: View {
 //                       Text("Map")
 //                   }
 //        }
-        ToolbarTest(messages: ["uno", "dos", "tres"])
+        //ToolbarTest(messages: ["uno", "dos", "tres"])
+        NavViewTest()
     }
 }
 
