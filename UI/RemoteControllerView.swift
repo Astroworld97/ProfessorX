@@ -15,6 +15,7 @@ struct RemoteControllerView: View {
                 .clipShape(Rectangle())
                 .frame(width: 300, height: 300)
         VStack{
+        SpeedMenuNavView()
         Button(action: {
             print("Forward button pressed")
         }) {

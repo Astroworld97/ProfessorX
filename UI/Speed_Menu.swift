@@ -14,6 +14,9 @@ struct Speed_Menu: View{
     var body: some View {
         Menu {
             Button(action: {}) {
+                Label("Stopped", systemImage: "hand.raised.fill")
+                }
+            Button(action: {}) {
                 Label("Low speed", systemImage: "tortoise.fill")
                 }
             Button(action: {}) {
