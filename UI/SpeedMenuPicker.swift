@@ -12,20 +12,18 @@ struct SpeedMenuPicker: View {
     @State var selectedSpeed = SpeedEnum.stopped
     
     var body: some View {
-        
-        Picker("Speed", selection: $selectedSpeed) {
-//            Text("Stopped").tag(SpeedEnum.stopped)
-//            Text("Low Speed").tag(SpeedEnum.low)
-//            Text("Mid Speed").tag(SpeedEnum.mid)
-//            Text("High Speed").tag(SpeedEnum.high)
-            Label("Stopped", systemImage: "hand.raised.fill").tag(SpeedEnum.stopped)
-            Label("Low speed", systemImage: "tortoise.fill").tag(SpeedEnum.low)
-            Label("Mid speed", systemImage: "hare.fill").tag(SpeedEnum.mid)
-            Label("High speed", systemImage: "bolt.fill").tag(SpeedEnum.high)
+        ZStack{
+            Color.blue
+            VStack{
+                Picker("Speed", selection: $selectedSpeed) {
+                    Label("Stopped", systemImage: "hand.raised.fill").tag(SpeedEnum.stopped)
+                    Label("Low speed", systemImage: "tortoise.fill").tag(SpeedEnum.low)
+                    Label("Mid speed", systemImage: "hare.fill").tag(SpeedEnum.mid)
+                    Label("High speed", systemImage: "bolt.fill").tag(SpeedEnum.high)
+                }
+                Text("Selected speed: \(selectedSpeed.rawValue)")
+            }
         }
-        
-        //Text("Selected speed: \(selectedSpeed.rawValue)")
-            
     }
 }
 

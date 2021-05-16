@@ -11,9 +11,10 @@ import UIKit
 struct RemoteControllerView: View {
     var body: some View {
         ZStack{
-            Image("nyc")
-                .clipShape(Rectangle())
-                .frame(width: 300, height: 300)
+//            Image("nyc")
+//                .clipShape(Rectangle())
+//                .frame(width: 300, height: 300)
+//                .ignoresSafeArea()
         VStack{
         //SpeedMenuNavView()
         Button(action: {
