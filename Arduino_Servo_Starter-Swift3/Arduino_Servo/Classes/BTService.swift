@@ -4,7 +4,7 @@
 //
 //  Created by Owen L Brown on 10/11/14.
 //  Copyright (c) 2014 Razeware LLC. All rights reserved.
-//
+//  OJO: BTService es para el Black Widow BLE Arduino Shield!!!
 
 import Foundation
 import CoreBluetooth

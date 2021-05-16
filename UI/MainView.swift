@@ -23,6 +23,11 @@ struct MainView: View {
                        Text("Map")
                    }
         }
+        //ToolbarTest(messages: ["uno", "dos", "tres"])
+        //NavViewTest()
+        //Speed_Menu()
+        //SpeedMenuNavView()
+        //PickerViewTest()
     }
 }
 

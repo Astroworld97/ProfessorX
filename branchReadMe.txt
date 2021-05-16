@@ -1,0 +1,1 @@
+The purpose of this branch is to test the app functionalities from the tutorial but instead using a dc motor instead of a servo motor. Hopefully it works. May the force be with you.

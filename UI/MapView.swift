@@ -54,8 +54,8 @@ final class Pin: NSObject, MKAnnotation { //simple pin (annotation) class that t
       }
 }
 
-struct MapView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView()
-    }
-}
+//struct MapView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MapView()
+//    }
+//}
