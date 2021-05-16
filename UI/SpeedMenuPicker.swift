@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-
-
-
-
 struct SpeedMenuPicker: View {
     
     @State var selectedSpeed = SpeedEnum.stopped
@@ -28,7 +24,7 @@ struct SpeedMenuPicker: View {
             Label("High speed", systemImage: "bolt.fill").tag(SpeedEnum.high)
         }
         
-        Text("Selected speed: \(selectedSpeed.rawValue)")
+        //Text("Selected speed: \(selectedSpeed.rawValue)")
             
     }
 }

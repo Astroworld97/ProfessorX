@@ -15,13 +15,17 @@ struct MainView: View {
                        Image(systemName: "gamecontroller.fill")
                        Text("Move")
                    }
-
-            MapView()
-                    .edgesIgnoringSafeArea(.all)
-                    .tabItem {
-                       Image(systemName: "map.fill")
-                       Text("Map")
-                   }
+            SpeedMenuPicker()
+                    .tabItem{
+                        Image(systemName: "speedometer")
+                        Text("Speed")
+                    }
+//            MapView()
+//                    .edgesIgnoringSafeArea(.all)
+//                    .tabItem {
+//                       Image(systemName: "map.fill")
+//                       Text("Map")
+//                   }
         }
         //ToolbarTest(messages: ["uno", "dos", "tres"])
         //NavViewTest()
