@@ -32,7 +32,9 @@ struct MainView: View {
         //Speed_Menu()
         //SpeedMenuNavView()
         //PickerViewTest()
-        JoystickTest()
+        //JoystickTest()
+        Spacer()
+        JoystickCustomTest()
     }
 }
 

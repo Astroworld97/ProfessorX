@@ -3,7 +3,7 @@
 //  ProfessorX
 //
 //  Created by Ian Gonzalez on 5/16/21.
-//
+//  https://github.com/tichise/OMJoystick
 
 import SwiftUI
 import OMJoystick
