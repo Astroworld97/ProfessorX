@@ -9,67 +9,33 @@ import SwiftUI
 import UIKit
 
 struct RemoteControllerView: View {
+    
+    @State var buttonPressed = true
+    
     var body: some View {
         ZStack{
 //            Image("nyc")
 //                .clipShape(Rectangle())
 //                .frame(width: 300, height: 300)
 //                .ignoresSafeArea()
-        VStack{
-        //SpeedMenuNavView()
-        Button(action: {
-            print("Forward button pressed")
-        }) {
-            VStack {
-                Image(systemName: "arrow.up")
-                    .foregroundColor(.white)
-                    .background(Color.black)
-                Text("Move forward")
-                    .foregroundColor(.white)
-                    .background(Color.black)
-            }
-        }
-        //Spacer()
-            HStack{
-                Button(action: {
-                    print("Left button pressed")
-                }) {
-                    VStack {
-                        Image(systemName: "arrow.left")
-                            .foregroundColor(.white)
-                            .background(Color.black)
-                        Text("Turn left")
-                            .foregroundColor(.white)
-                            .background(Color.black)
-                    }
+            VStack(alignment: .center){
+                ForwardButton()
+                    //.alignmentGuide(HorizontalAlignment.center, computeValue: {_ in 80})
+                Spacer()
+            .frame(height: 50)
+                HStack{
+                    LeftButton()
+                    Spacer()
+                    StopButton()
+                    Spacer()
+                    RightButton()
                 }
                 Spacer()
-                Button(action: {
-                    print("Right button pressed")
-                }) {
-                    VStack {
-                        Image(systemName: "arrow.right")
-                            .foregroundColor(.white)
-                            .background(Color.black)
-                        Text("Turn right")
-                            .foregroundColor(.white)
-                            .background(Color.black)
-                    }
-                }
+                    .frame(height: 50)
+                BackwardButton()
+                    //.alignmentGuide(HorizontalAlignment.center, computeValue: {_ in 80})
+                    //.alignmentGuide(.custom) { $0[HorizontalAlignment.center] }
             }
-        Button(action: {
-            print("Backward button pressed")
-        }) {
-            VStack {
-                Image(systemName: "arrow.down")
-                    .foregroundColor(.white)
-                    .background(Color.black)
-                Text("Move backward")
-                    .foregroundColor(.white)
-                    .background(Color.black)
-            }
-        }
-        }
         }
     }
 }

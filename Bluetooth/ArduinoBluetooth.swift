@@ -18,7 +18,7 @@ import CoreBluetooth
 /* Services & Characteristics UUIDs */
 let BlackWidowBLEUUID = CBUUID(string: "025A7775-49AA-42BD-BBDB-E2AE77782966") //UUID for the Black Widow BLE shield
 let BlackWidowBLETXUUID = CBUUID(string: "F38A2C23-BC54-40FC-BED0-60EDDA139F47") //UUID for the TX of the Black Widow BLE shield. The iOS device sends data to the BLE Shield’s TX characteristic which is then received on the RX pin of the Arduino. The maximum amount of data which can be sent at once is 20 bytes due to BLE121LR restrictions.
-let ArduinoBluetoothChangedStatusNotification = "kBLEServiceChangedStatusNotification" //no idea what this is for
+let ArduinoBluetoothChangedStatusNotification = "kBLEServiceChangedStatusNotification" //to store whether the Bluetooth connection to the Black Widow BLE has changed
 
 class ArduinoBluetooth : NSObject, CBPeripheralDelegate{
     var peripheral: CBPeripheral?
