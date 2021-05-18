@@ -22,7 +22,7 @@ let ArduinoBluetoothChangedStatusNotification = "kBLEServiceChangedStatusNotific
 
 class ArduinoBluetooth : NSObject, CBPeripheralDelegate{
     var peripheral: CBPeripheral?
-    var positionCharacteristic: CBCharacteristic?
+    var speedCharacteristic: CBCharacteristic?
     
     init(initWithPeripheral peripheral: CBPeripheral) {
       super.init()
@@ -88,7 +88,7 @@ class ArduinoBluetooth : NSObject, CBPeripheralDelegate{
       if let characteristics = service.characteristics {
         for characteristic in characteristics {
           if characteristic.uuid == BlackWidowBLETXUUID {
-            self.positionCharacteristic = (characteristic)
+            self.speedCharacteristic = (characteristic)
             peripheral.setNotifyValue(true, for: characteristic)
             
             // Send notification that Bluetooth is connected and all required characteristics are discovered
@@ -98,11 +98,11 @@ class ArduinoBluetooth : NSObject, CBPeripheralDelegate{
       }
     }
     
-    func writePosition(_ position: UInt8) {
+    func writeSpeed(_ speed: UInt8) {
       // See if characteristic has been discovered before writing to it
-      if let positionCharacteristic = self.positionCharacteristic {
-          let data = Data(_: [position])
-          self.peripheral?.writeValue(data, for: positionCharacteristic, type: CBCharacteristicWriteType.withResponse)
+      if let speedCharacteristic = self.speedCharacteristic {
+          let data = Data(_: [speed])
+          self.peripheral?.writeValue(data, for: speedCharacteristic, type: CBCharacteristicWriteType.withResponse)
       }
     }
     

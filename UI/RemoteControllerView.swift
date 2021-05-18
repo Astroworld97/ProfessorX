@@ -10,7 +10,13 @@ import UIKit
 
 struct RemoteControllerView: View {
     
-    @State var buttonPressed = true
+    @State var leftButtonPressed = false
+    @State var rightButtonPressed = false
+    @State var forwardButtonPressed = false
+    @State var backwardButtonPressed = false
+    @State var stopButtonPressed = false
+    @State var numButtonPressed = 0 //if this value is ever more than 1, reset to zero and show an error notification on screen
+    @State var bcc = BluetoothControlCenter()
     
     var body: some View {
         ZStack{
