@@ -5,6 +5,7 @@
 //  Created by Ian Gonzalez on 5/17/21.
 //
 
+import Foundation
 import SwiftUI
 
 class BluetoothControlCenter{
@@ -13,12 +14,14 @@ class BluetoothControlCenter{
     var textualSpeed: String = ""
     var allowTX = true
     var pb = PhoneBluetooth()
+    
     var imgBluetoothConnected: some View{
         Image("Bluetooth_Connected")
     }
     var imgBluetoothDisconnected: some View{
         Image("Bluetooth_Connected")
     }
+    var isConnected: Bool
     
     //valid speed range: 0 to 255
     func sendSpeed(speed: UInt8) {
@@ -47,23 +50,12 @@ class BluetoothControlCenter{
           }
     }
     
-    @objc func connectionChanged(_ notification: Notification) {
-    // Connection status changed. Indicate on UI.
-    let userInfo = (notification as NSNotification).userInfo as! [String: Bool]
-    DispatchQueue.main.async(execute: {
+    func connectionChanged() {
       // Set image based on connection status
-      if let isConnected: Bool = userInfo["isConnected"] {
         if isConnected {
             self.imgBluetoothConnected
         } else {
             self.imgBluetoothDisconnected
         }
       }
-    });
   }
-    
-    
-    
-    
-}
-
