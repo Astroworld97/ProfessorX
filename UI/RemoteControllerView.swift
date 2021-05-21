@@ -16,7 +16,7 @@ struct RemoteControllerView: View {
     @State var backwardButtonPressed = false
     @State var stopButtonPressed = false
     @State var numButtonPressed = 0 //if this value is ever more than 1, reset to zero and show an error notification on screen
-    @State var bcc = BluetoothControlCenter()
+    //@State var bcc = BluetoothControlCenter()
     
     var body: some View {
         ZStack{
