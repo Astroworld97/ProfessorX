@@ -51,7 +51,8 @@ class BluetoothViewController: UIViewController, CBCentralManagerDelegate{
             // Alert user their device does not support Bluetooth and app will not work as expected
         default .unknown:
             //Wait for next state update
-            
         }
     }
+    
+    
 }
