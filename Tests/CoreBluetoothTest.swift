@@ -38,6 +38,20 @@ class BluetoothViewController: UIViewController, CBCentralManagerDelegate{
      6. unknown: The state of the manager and the app's connection to the Bluetooth service is unknown.
      */
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        
+        switch central.state {
+        case .poweredOn:
+            startScan()
+        case .poweredOff:
+            // Alert user to turn on Bluetooth
+        case .resetting:
+            // Wait for next state update and consider logging interruption of Bluetooth service
+        case .unauthorized:
+            // Alert user to enable Bluetooth permission in app settings
+        case .unsupported:
+            // Alert user their device does not support Bluetooth and app will not work as expected
+        default .unknown:
+            //Wait for next state update
+            
+        }
     }
 }
