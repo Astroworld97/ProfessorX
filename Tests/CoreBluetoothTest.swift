@@ -23,6 +23,24 @@ class BluetoothViewController: UIViewController, CBCentralManagerDelegate{
         centralManager = CBCentralManager(delegate: self, queue: nil)
     }
     
+    
+    
+    func centralManager(_ central: CBCentralManager,
+                        didDiscover peripheral: CBPeripheral,
+                        advertisementData: [String : Any],
+                        rssi RSSI: NSNumber) {
+        <#code#>
+    }
+    
+    var discoveredPeripherals = [CBPeripheral]()
+    
+    func startScan(){
+        centralManager.scanForPeripherals(withServices: nil, options: nil)
+    }
+    
+}
+
+extension BluetoothViewController {
     /*
      The centralManagerDidUpdateState() method is called by CoreBluetooth whenever the state of Bluetooth on the phone and
      within the app is updated. Under normal circumstances you should receive a didUpdateState() call to the delegate object
@@ -49,10 +67,14 @@ class BluetoothViewController: UIViewController, CBCentralManagerDelegate{
             // Alert user to enable Bluetooth permission in app settings
         case .unsupported:
             // Alert user their device does not support Bluetooth and app will not work as expected
-        default .unknown:
+        case .unknown:
             //Wait for next state update
         }
     }
-    
-    
+}
+
+extension CBCentralManagerDelegate{
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        self.discoveredPeripherals.append(peripheral)
+    }
 }
