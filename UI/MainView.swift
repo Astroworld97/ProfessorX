@@ -9,30 +9,23 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-//        TabView {
-//            RemoteControllerView()
-//                   .tabItem {
-//                       Image(systemName: "gamecontroller.fill")
-//                       Text("Move")
-//                   }
-//            SpeedMenuPicker()
-//                    .tabItem{
-//                        Image(systemName: "speedometer")
-//                        Text("Speed")
-//                    }
-//            MapView()
-//                    .edgesIgnoringSafeArea(.all)
-//                    .tabItem {
-//                       Image(systemName: "map.fill")
-//                       Text("Map")
-//                   }
-//        }
-        //ToolbarTest(messages: ["uno", "dos", "tres"])
-        //NavViewTest()
-        //Speed_Menu()
-        //SpeedMenuNavView()
-        //PickerViewTest()
-        BluetoothDevicesView()
+        TabView {
+            RemoteControllerView()
+                   .tabItem {
+                       Image(systemName: "gamecontroller.fill")
+                       Text("Move")
+                   }
+            SpeedMenuPicker()
+                    .tabItem{
+                        Image(systemName: "speedometer")
+                        Text("Speed")
+                    }
+            BluetoothDevicesView()
+                .tabItem{
+                    Image(systemName: "flipphone")
+                    Text("Bluetooth")
+                }
+        }
     }
 }
 

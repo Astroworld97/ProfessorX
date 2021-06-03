@@ -23,7 +23,7 @@ var body: some View {
                 //Text(String(peripheral.rssi))
             }
         }
-        .frame(height: UIScreen.main.bounds.height/2)
+        //.frame(height: UIScreen.main.bounds.height/2)
         
         Spacer()
         
@@ -57,6 +57,12 @@ var body: some View {
             }) {
                 Text("Connect to Arduino")
             }
+            Button(action: {
+                bleManager.checkArduinoConnection()
+            }) {
+                Text("Check Arduino Connection")
+            }
+
         }.padding()
         Spacer()
     }

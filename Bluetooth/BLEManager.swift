@@ -65,7 +65,17 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
     
     func connect(){
         myCentral.connect(blackWidowPeripheral)
-        print("Connected to Arduino!!!")
+        print("Connected")
+    }
+    
+    func checkArduinoConnection(){
+        //centralManager.retrieveConnectedPeripherals(CBUUID array) returns
+        //A list of the peripherals that are currently connected to the system and that contain any of the services specified in the parameter.
+        //reference: https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518924-retrieveconnectedperipherals
+        var retval = myCentral.retrieveConnectedPeripherals(withServices: CBUUIDarray)
+        if(retval.contains(blackWidowPeripheral)){
+            print("Successful Connection")
+        }
     }
     
 }

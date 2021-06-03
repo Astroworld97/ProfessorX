@@ -13,7 +13,7 @@ struct SpeedMenuPicker: View {
     
     var body: some View {
         ZStack{
-            Color.blue
+            Color.black
             VStack{
                 Picker("Speed", selection: $selectedSpeed) {
                     Label("Stopped", systemImage: "hand.raised.fill").tag(SpeedEnum.stopped)
