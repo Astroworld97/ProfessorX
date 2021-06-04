@@ -11,12 +11,18 @@ struct BluetoothDevicesView: View {
 @ObservedObject var bleManager = BLEManager()
 
 var body: some View {
-    VStack (spacing: 30) {
+    ZStack{
+        Image("bluetooth_in_hand")
+            .colorInvert()
+            .opacity(0.2)
+    VStack (spacing: 70) {
         Spacer()
         Text("Bluetooth Devices")
             .font(.largeTitle)
-            .frame(maxWidth: .infinity, alignment: .center)
-        Image("bluetooth_in_hand")
+            //.frame(maxWidth: .infinity, alignment: .center)
+            .frame(alignment: .center)
+
+        
         List(bleManager.peripherals) { peripheral in
             HStack {
                 Text(peripheral.name)
@@ -26,16 +32,19 @@ var body: some View {
         }
         
         Text("STATUS")
-            .font(.headline)
+            .font(.title)
         
         // Status goes here
+        //this indicates if Bluetooth is on or not FOR THE DEVICE, i.e. the iPhone
         if bleManager.isSwitchedOn {
             Text("Bluetooth is switched on")
                 .foregroundColor(.green)
+                .font(.title2)
         }
         else {
             Text("Bluetooth is NOT switched on")
                 .foregroundColor(.red)
+                .font(.title3)
         }
         
         Spacer()
@@ -64,6 +73,7 @@ var body: some View {
         }.padding()
         Spacer()
     }
+}
 }
 }
 
