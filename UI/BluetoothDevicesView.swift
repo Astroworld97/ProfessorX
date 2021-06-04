@@ -11,11 +11,12 @@ struct BluetoothDevicesView: View {
 @ObservedObject var bleManager = BLEManager()
 
 var body: some View {
-    VStack (spacing: 10) {
+    VStack (spacing: 30) {
+        Spacer()
         Text("Bluetooth Devices")
             .font(.largeTitle)
             .frame(maxWidth: .infinity, alignment: .center)
-        
+        Image("bluetooth_in_hand")
         List(bleManager.peripherals) { peripheral in
             HStack {
                 Text(peripheral.name)
@@ -23,9 +24,6 @@ var body: some View {
                 //Text(String(peripheral.rssi))
             }
         }
-        //.frame(height: UIScreen.main.bounds.height/2)
-        
-        Spacer()
         
         Text("STATUS")
             .font(.headline)

@@ -16,10 +16,11 @@ struct SpeedMenuPicker: View {
             Color.black
             VStack{
                 Picker("Speed", selection: $selectedSpeed) {
-                    Label("Stopped", systemImage: "hand.raised.fill").tag(SpeedEnum.stopped)
-                    Label("Low speed", systemImage: "tortoise.fill").tag(SpeedEnum.low)
-                    Label("Mid speed", systemImage: "hare.fill").tag(SpeedEnum.mid)
                     Label("High speed", systemImage: "bolt.fill").tag(SpeedEnum.high)
+                    Label("Mid speed", systemImage: "hare.fill").tag(SpeedEnum.mid)
+                    Label("Low speed", systemImage: "tortoise.fill").tag(SpeedEnum.low)
+                    Label("Stopped", systemImage: "hand.raised.fill").tag(SpeedEnum.stopped)
+                    Label("Custom Speed", systemImage: "pencil").tag(SpeedEnum.custom)
                 }
                 Text("Selected speed: \(selectedSpeed.rawValue)")
             }

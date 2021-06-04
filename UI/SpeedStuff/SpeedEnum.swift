@@ -6,10 +6,11 @@
 //
 
 enum SpeedEnum: String, CaseIterable, Identifiable {
-    case stopped = "Stopped"
-    case low = "Low Speed"
-    case mid = "Mid Speed"
     case high = "High Speed"
+    case mid = "Mid Speed"
+    case low = "Low Speed"
+    case stopped = "Stopped"
+    case custom = "Custom Speed"
     
     var id: String {
         self.rawValue
