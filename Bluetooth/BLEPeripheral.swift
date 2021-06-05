@@ -21,6 +21,7 @@ class BLEPeripheral: NSObject, CBPeripheralDelegate {
       
       self.peripheral = peripheral
       self.peripheral?.delegate = self
+      self.positionCharacteristic =
     }
     
     deinit {

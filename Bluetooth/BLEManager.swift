@@ -68,6 +68,11 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
         print("Connected")
     }
     
+    func disconnect(){
+        myCentral.cancelPeripheralConnection(blackWidowPeripheral)
+        print("Disconnected")
+    }
+    
     func checkArduinoConnection(){
         //centralManager.retrieveConnectedPeripherals(CBUUID array) returns
         //A list of the peripherals that are currently connected to the system and that contain any of the services specified in the parameter.
@@ -75,6 +80,8 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
         let retval = myCentral.retrieveConnectedPeripherals(withServices: CBUUIDarray)
         if(retval.contains(blackWidowPeripheral)){
             print("Successful Connection")
+        }else{
+            print("Not Connected")
         }
     }
     
