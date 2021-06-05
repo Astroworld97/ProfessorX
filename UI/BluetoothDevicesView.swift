@@ -18,9 +18,9 @@ var body: some View {
         
     VStack (spacing: 25) {
         Spacer()
-        Text("Bluetooth Devices")
+        Text("Bluetooth Manager")
             .font(.largeTitle)
-            //.frame(maxWidth: .infinity, alignment: .center)
+            .frame(maxWidth: .infinity, alignment: .center)
             .frame(alignment: .center)
         Spacer()
         Text("STATUS")
@@ -33,9 +33,17 @@ var body: some View {
             Text("Bluetooth is switched on")
                 .foregroundColor(.green)
                 .font(.title2)
-        }
-        else {
+        }else{
             Text("Bluetooth is NOT switched on")
+                .foregroundColor(.red)
+                .font(.title3)
+        }
+        if bleManager.isConnected{
+            Text("Arduino is connected")
+                .foregroundColor(.green)
+                .font(.title2)
+        }else{
+            Text("Arduino is NOT connected")
                 .foregroundColor(.red)
                 .font(.title3)
         }
@@ -65,6 +73,11 @@ var body: some View {
                 bleManager.checkArduinoConnection()
             }) {
                 Text("Check Arduino Connection")
+            }
+            Button(action: {
+                bleManager.printServices()
+            }) {
+                Text("Test")
             }
             Spacer()
             List(bleManager.peripherals) { peripheral in

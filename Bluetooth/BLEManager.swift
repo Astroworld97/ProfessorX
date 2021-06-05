@@ -17,7 +17,9 @@ struct Peripheral: Identifiable{
 class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
     
     var myCentral: CBCentralManager!
-    @Published var isSwitchedOn = false
+    @Published var isSwitchedOn = false //false if Bluetooth on phone is off. True, otherwise.
+    @Published var isFound = false //false if Black Widow BLE is found when scanned. True, otherwise.
+    @Published var isConnected = false //false if Black Widow BLE is is connected via Bluetooth to the phone. True, otherwise.
     @Published var peripherals = [Peripheral]()
     var BlackWidowBLECBUUID = CBUUID(string: "025A7775-49AA-42BD-BBDB-E2AE77782966")
     var BlackWidowBLETXCBUUID = CBUUID(string: "F38A2C23-BC54-40FC-BED0-60EDDA139F47")
@@ -65,11 +67,13 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
     
     func connect(){
         myCentral.connect(blackWidowPeripheral)
+        isConnected = true
         print("Connected")
     }
     
     func disconnect(){
         myCentral.cancelPeripheralConnection(blackWidowPeripheral)
+        isConnected = false
         print("Disconnected")
     }
     
@@ -80,9 +84,19 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
         let retval = myCentral.retrieveConnectedPeripherals(withServices: CBUUIDarray)
         if(retval.contains(blackWidowPeripheral)){
             print("Successful Connection")
+            isFound = true
         }else{
             print("Not Connected")
         }
     }
+    
+    func printServices(){
+        let arr = blackWidowPeripheral.services!
+        print(arr)
+    }
+    
+//    func writeSpeed(speed: Int){
+//        blackWidowPeripheral.writeValue(speed, for: CBCharacteristic)
+//    }
     
 }
