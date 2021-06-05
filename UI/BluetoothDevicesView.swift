@@ -15,25 +15,18 @@ var body: some View {
         Image("bluetooth_in_hand")
             .colorInvert()
             .opacity(0.2)
-    VStack (spacing: 70) {
+        
+    VStack (spacing: 25) {
         Spacer()
         Text("Bluetooth Devices")
             .font(.largeTitle)
             //.frame(maxWidth: .infinity, alignment: .center)
             .frame(alignment: .center)
-
-        
-        List(bleManager.peripherals) { peripheral in
-            HStack {
-                Text(peripheral.name)
-                Spacer()
-                //Text(String(peripheral.rssi))
-            }
-        }
-        
+        Spacer()
         Text("STATUS")
             .font(.title)
-        
+        //Spacer()
+        //Spacer()
         // Status goes here
         //this indicates if Bluetooth is on or not FOR THE DEVICE, i.e. the iPhone
         if bleManager.isSwitchedOn {
@@ -46,7 +39,6 @@ var body: some View {
                 .foregroundColor(.red)
                 .font(.title3)
         }
-        
         Spacer()
         VStack (spacing: 25) {
             Button(action: {
@@ -65,13 +57,27 @@ var body: some View {
                 Text("Connect to Arduino")
             }
             Button(action: {
+                bleManager.disconnect()
+            }) {
+                Text("Disconnect from Arduino")
+            }
+            Button(action: {
                 bleManager.checkArduinoConnection()
             }) {
                 Text("Check Arduino Connection")
             }
+            Spacer()
+            List(bleManager.peripherals) { peripheral in
+                HStack {
+                    Spacer()
+                    Text(peripheral.name)
+                    Spacer()
+                    Text(String(peripheral.rssi))
+                    Spacer()
+                }
+            }
 
         }.padding()
-        Spacer()
     }
 }
 }
