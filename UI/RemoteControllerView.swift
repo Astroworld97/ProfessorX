@@ -18,15 +18,19 @@ struct RemoteControllerView: View {
 
     var body: some View {
         ZStack{
-//            Image("nyc")
-//                .clipShape(Rectangle())
-//                .frame(width: 300, height: 300)
-//                .ignoresSafeArea()
+            Color.black
             VStack(alignment: .center){
+                Spacer()
+                Text("Remote Controller")
+                    .font(.largeTitle)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .frame(alignment: .center)
+                    .accentColor(.white)
+                Spacer()
                 ForwardButton()
                     //.alignmentGuide(HorizontalAlignment.center, computeValue: {_ in 80})
                 Spacer()
-            .frame(height: 50)
+                    .frame(height: 50)
                 HStack{
                     LeftButton()
                     Spacer()
@@ -39,13 +43,10 @@ struct RemoteControllerView: View {
                 BackwardButton()
                     //.alignmentGuide(HorizontalAlignment.center, computeValue: {_ in 80})
                     //.alignmentGuide(.custom) { $0[HorizontalAlignment.center] }
+                Spacer()
+                Spacer()
             }
         }
     }
 }
 
-//struct RemoteControllerView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RemoteControllerView()
-//    }
-//}

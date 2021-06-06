@@ -12,7 +12,9 @@ struct BluetoothDevicesView: View {
 
 var body: some View {
     ZStack{
-        Image("bluetooth_in_hand")
+        Color.black
+            .ignoresSafeArea()
+        Image("bluetooth_in_hand_black")
             .colorInvert()
             .opacity(0.2)
         
@@ -22,9 +24,11 @@ var body: some View {
             .font(.largeTitle)
             .frame(maxWidth: .infinity, alignment: .center)
             .frame(alignment: .center)
+            .accentColor(.white)
         Spacer()
         Text("STATUS")
             .font(.title)
+            .accentColor(.white)
         //Spacer()
         //Spacer()
         // Status goes here
@@ -83,21 +87,17 @@ var body: some View {
             List(bleManager.peripherals) { peripheral in
                 HStack {
                     Spacer()
-                    Text(peripheral.name)
                     Spacer()
-                    Text(String(peripheral.rssi))
+                    Spacer()
+                    Text(peripheral.name)
+                    //Spacer()
+                    //Text(String(peripheral.approxDistInMeters) + " m")
                     Spacer()
                 }
             }
-
-        }.padding()
+        }
     }
-}
-}
-}
 
-//struct BluetoothDevicesView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BluetoothDevicesView()
-//    }
-//}
+    }.padding()
+}
+}
