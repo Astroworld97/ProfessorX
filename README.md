@@ -1,5 +1,4 @@
 # ProfessorX
-## Tentative name: Adaptability On The Move
 
 # Important Rules of Pushing Code to Codebase
 **Git commit standardization**
