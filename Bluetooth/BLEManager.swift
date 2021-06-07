@@ -50,24 +50,48 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
     @Published var peripherals = [Peripheral]()
     //service
     var BlackWidowBLECBUUID = CBUUID(string: "025A7775-49AA-42BD-BBDB-E2AE77782966")
-    //characteristic
+    //characteristic for sending from the iOS to the Arduino
     var BlackWidowBLETXCBUUID = CBUUID(string: "F38A2C23-BC54-40FC-BED0-60EDDA139F47")
-    //characteristic
-    var BlackWidowBLERXCBUUID = CBUUID(string: "A9CD2F86-8661-4EB1-B132-367A3434BC90")
+    //No need to initialize the characteristic below. For details, see https://stackoverflow.com/questions/31949303/swift-2-0-initialize-a-cbcharacteristic
+    var transmissionCharacteristic: CBCharacteristic?
+    //characteristic for receiving data on the iOS side. Not needed.
+    //var BlackWidowBLERXCBUUID = CBUUID(string: "A9CD2F86-8661-4EB1-B132-367A3434BC90")
     var servicesArray:[CBUUID]
     var characteristicArray:[CBUUID]
     var blackWidowPeripheral: CBPeripheral!
-    //var time = DispatchTime(uptimeNanoseconds: 0)
+    var allowTX: Bool
+    var setSpeed: Int
+    var speedDict: [String: Int]
 
     override init(){
         self.servicesArray = [CBUUID]()
         self.characteristicArray = [CBUUID]()
         self.servicesArray.append(BlackWidowBLECBUUID)
         self.characteristicArray.append(BlackWidowBLETXCBUUID)
-        self.characteristicArray.append(BlackWidowBLERXCBUUID)
+        //self.characteristicArray.append(BlackWidowBLERXCBUUID)
         super.init()
         myCentral = CBCentralManager(delegate: self, queue: nil)
         myCentral.delegate = self
+        allowTX = true
+        setSpeed = 0
+        speedDict = [String: Int]()
+        speedDict = ["High Speed" : 255,
+                     "Mid Speed" : 170,
+                     "Low Speed" : 85,
+                     "Stopped" : 0,
+                     "Custom Speed" : 0]
+    }
+    
+    func setCustomSpeed(customSpeed: Int) -> Void{
+        speedDict["Custom Speed"] = customSpeed
+    }
+    
+    func setAllowTX(setVal: Bool) -> Void{
+        allowTX = setVal
+    }
+    
+    func getAllowTX() -> Bool{
+        return allowTX
     }
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -140,17 +164,89 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
         }
     }
     
-    func printServices(){
+    func printServices() -> String{
 //        blackWidowPeripheral.discoverServices([BlackWidowBLECBUUID])
 //        let arr = blackWidowPeripheral
 //        print(arr)
-        for s in servicesArray{
-            print(s)
+//        for s in servicesArray{
+//            print(s)
+//        }
+        var test = false
+        if (test==false){
+            return("nil")
+        }else{
+            return("")
         }
+        
     }
     
-//    func writeSpeed(speed: Int){
-//        blackWidowPeripheral.writeValue(speed, for: CBCharacteristic)
-//    }
+    func setAnalogSpeed(speedString: String){
+        
+        var speedInt:Int
+        speedInt = 0
+        
+        // Valid analog range: 0 to 255
+          // 1
+          if !allowTX {
+            return
+          }
+        
+          // 2
+          // Validate value
+          if (speedInt == setSpeed) {
+            return
+          }
+          
+          // 3
+          else if ((setSpeed < 0) || (setSpeed > 255)) {
+            return
+          }
+        
+          else{
+            speedInt = self.speedDict[speedString]!
+          }
+    }
+    
+    func writeAnalogSpeed(vel: UInt8){
+        let data = Data(_: [vel])
+        self.blackWidowPeripheral.writeValue(data, for: transmissionCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+    }
+    
+    func setDigitalSpeed(){
+        // Valid position range: 0 to 180
+          // 1
+          if !allowTX {
+            return
+          }
+          
+          // 2
+          // Validate value
+          if position == lastPosition {
+            return
+          }
+          // 3
+          else if ((position < 0) || (position > 180)) {
+            return
+          }
+          
+          // 4
+          // Send position to BLE Shield (if service exists and is connected)
+          if let bleService = btDiscoverySharedInstance.bleService {
+            bleService.writePosition(position)
+            lastPosition = position
+
+            // 5
+            // Start delay timer
+            allowTX = false
+            if timerTXDelay == nil {
+              timerTXDelay = Timer.scheduledTimer(timeInterval: 0.1,
+                target: self,
+                selector: #selector(ViewController.timerTXDelayElapsed),
+                userInfo: nil,
+                repeats: false)
+            }
+          }
+
+    }
     
 }
