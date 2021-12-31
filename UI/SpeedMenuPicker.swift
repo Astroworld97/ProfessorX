@@ -10,7 +10,7 @@ import SwiftUI
 struct SpeedMenuPicker: View {
     
     @State var selectedSpeed = SpeedEnum.stopped
-    
+    @Binding @State var BlackWidow : Peripheral
     var body: some View {
         ZStack{
             Color.black
@@ -29,6 +29,9 @@ struct SpeedMenuPicker: View {
                     Label("Stopped", systemImage: "hand.raised.fill").tag(SpeedEnum.stopped)
                     Label("Custom Speed", systemImage: "pencil").tag(SpeedEnum.custom)
                 }.accentColor(.white)
+                .onReceive(/*@START_MENU_TOKEN@*//*@PLACEHOLDER=Publisher@*/NotificationCenter.default.publisher(for: .NSCalendarDayChanged)/*@END_MENU_TOKEN@*/, perform: { _ in
+                    BlackWidow.writeSpeed(speedStr: selectedSpeed.rawValue)
+                })
                 Text("Selected speed: \(selectedSpeed.rawValue)")
                     .accentColor(.white)
                 Spacer()

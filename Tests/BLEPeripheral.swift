@@ -5,6 +5,8 @@
 //  Created by Ian Gonzalez on 6/4/21.
 //  source: https://www.raywenderlich.com/2164-arduino-tutorial-integrating-bluetooth-le-and-ios-with-swift
 
+//OJO: to be deleted!!!
+
 import CoreBluetooth
 
 /* Services & Characteristics UUIDs */

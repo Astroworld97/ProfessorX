@@ -15,7 +15,7 @@ struct MainView: View {
                        Image(systemName: "gamecontroller.fill")
                        Text("Move")
                    }
-            SpeedMenuPicker()
+            SpeedMenuPicker( BlackWidow: <#Binding<State<Peripheral>>#>)
                     .tabItem{
                         Image(systemName: "speedometer")
                         Text("Speed")

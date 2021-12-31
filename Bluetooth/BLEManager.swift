@@ -5,21 +5,38 @@
 //  Created by Ian Gonzalez on 6/2/21.
 //  source: https://stackoverflow.com/questions/67736804/why-i-couldnt-detect-other-bluetooth-devices-using-corebluetooh-in-swiftui
 
+//OJO: this file will manage both the Bluetooth manager and the peripheral
+
 import Foundation
 import CoreBluetooth
 
 
-class Peripheral: Identifiable{
+class Peripheral: NSObject, Identifiable, CBPeripheralDelegate{
     var id: Int
     var name: String
     var rssi: Int
     var approxDistInMeters: Float //for more info on the conversion between RSSI and distance in meters, read the Notes.docx Word file and the Meters vs RSSI Excel sheet
+    var speedCharacteristic: CBCharacteristic?
+    var peripheral: CBPeripheral?
+    var speedDict: [String: Int]
+    var speedStr: String
+    var speedInt: UInt8
 
-    init(id: Int, name: String, rssi: Int, approxDistInMeters: Float, approxDistInFeet: Float){
+    init(id: Int, name: String, rssi: Int, approxDistInMeters: Float, approxDistInFeet: Float, initWithPeripheral peripheral: CBPeripheral){
+        self.peripheral = peripheral
         self.id = id
         self.name = name
         self.rssi = rssi
         self.approxDistInMeters = approxDistInMeters
+        self.speedDict = ["High Speed": 255,
+                     "Mid Speed": 170,
+                     "Low Speed": 85,
+                     "Stopped": 0,
+                     "Custom Speed": 0]
+        self.speedStr = ""
+        self.speedInt = 0
+        super.init()
+        self.peripheral?.delegate = self
     }
 
     //Note: I split up the calculation into several steps because the program wouldn't compile otherwise
@@ -39,6 +56,16 @@ class Peripheral: Identifiable{
     public func distInFeet() -> Float{
         return approxDistInMeters * 3.28
     }
+    func writeSpeed(speedStr: String) { //OJO: the motor speed goes from 0 to 255
+      // See if characteristic has been discovered before writing to it
+        speedInt = UInt8(speedDict[speedStr] ?? 0)
+        
+      if let speedCharacteristic = self.speedCharacteristic {
+          let data = Data(_: [speedInt])
+          self.peripheral?.writeValue(data, for: speedCharacteristic, type: CBCharacteristicWriteType.withResponse)
+      }
+    }
+
 }
 
 class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
@@ -64,22 +91,23 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
     var speedDict: [String: Int]
 
     override init(){
+        
         self.servicesArray = [CBUUID]()
         self.characteristicArray = [CBUUID]()
         self.servicesArray.append(BlackWidowBLECBUUID)
         self.characteristicArray.append(BlackWidowBLETXCBUUID)
+        self.allowTX = true
         //self.characteristicArray.append(BlackWidowBLERXCBUUID)
-        super.init()
-        myCentral = CBCentralManager(delegate: self, queue: nil)
-        myCentral.delegate = self
-        allowTX = true
-        setSpeed = 0
-        speedDict = [String: Int]()
-        speedDict = ["High Speed" : 255,
+        self.setSpeed = 0
+        self.speedDict = [String: Int]()
+        self.speedDict = ["High Speed" : 255,
                      "Mid Speed" : 170,
                      "Low Speed" : 85,
                      "Stopped" : 0,
                      "Custom Speed" : 0]
+        super.init()
+        myCentral = CBCentralManager(delegate: self, queue: nil)
+        myCentral.delegate = self
     }
     
     func setCustomSpeed(customSpeed: Int) -> Void{
@@ -103,7 +131,7 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String:Any], rssi RSSI: NSNumber) {
-        let newPeripheral = Peripheral(id: 0, name: "", rssi: 0, approxDistInMeters: 0.0, approxDistInFeet: 0.0)
+        let newPeripheral = Peripheral(id: 0, name: "", rssi: 0, approxDistInMeters: 0.0, approxDistInFeet: 0.0, initWithPeripheral: peripheral)
         print(newPeripheral)
         peripherals.append(newPeripheral)
         print("peripheral: \(peripheral)")
@@ -180,73 +208,73 @@ class BLEManager: NSObject, ObservableObject, CBCentralManagerDelegate{
         
     }
     
-    func setAnalogSpeed(speedString: String){
-        
-        var speedInt:Int
-        speedInt = 0
-        
-        // Valid analog range: 0 to 255
-          // 1
-          if !allowTX {
-            return
-          }
-        
-          // 2
-          // Validate value
-          if (speedInt == setSpeed) {
-            return
-          }
-          
-          // 3
-          else if ((setSpeed < 0) || (setSpeed > 255)) {
-            return
-          }
-        
-          else{
-            speedInt = self.speedDict[speedString]!
-          }
-    }
-    
-    func writeAnalogSpeed(vel: UInt8){
-        let data = Data(_: [vel])
-        self.blackWidowPeripheral.writeValue(data, for: transmissionCharacteristic!, type: CBCharacteristicWriteType.withResponse)
-    }
-    
-    func setDigitalSpeed(){
-        // Valid position range: 0 to 180
-          // 1
-          if !allowTX {
-            return
-          }
-          
-          // 2
-          // Validate value
-          if position == lastPosition {
-            return
-          }
-          // 3
-          else if ((position < 0) || (position > 180)) {
-            return
-          }
-          
-          // 4
-          // Send position to BLE Shield (if service exists and is connected)
-          if let bleService = btDiscoverySharedInstance.bleService {
-            bleService.writePosition(position)
-            lastPosition = position
-
-            // 5
-            // Start delay timer
-            allowTX = false
-            if timerTXDelay == nil {
-              timerTXDelay = Timer.scheduledTimer(timeInterval: 0.1,
-                target: self,
-                selector: #selector(ViewController.timerTXDelayElapsed),
-                userInfo: nil,
-                repeats: false)
-            }
-          }
-
-    }
-    
+//    func setAnalogSpeed(speedString: String){
+//
+//        var speedInt:Int
+//        speedInt = 0
+//
+//        // Valid analog range: 0 to 255
+//          // 1
+//          if !allowTX {
+//            return
+//          }
+//
+//          // 2
+//          // Validate value
+//          if (speedInt == setSpeed) {
+//            return
+//          }
+//
+//          // 3
+//          else if ((setSpeed < 0) || (setSpeed > 255)) {
+//            return
+//          }
+//
+//          else{
+//            speedInt = self.speedDict[speedString]!
+//          }
+//    }
+//
+//    func writeAnalogSpeed(vel: UInt8){
+//        let data = Data(_: [vel])
+//        self.blackWidowPeripheral.writeValue(data, for: transmissionCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+//    }
+//
+//    func setDigitalSpeed(){
+//        // Valid position range: 0 to 180
+//          // 1
+//          if !allowTX {
+//            return
+//          }
+//
+//          // 2
+//          // Validate value
+//          if position == lastPosition {
+//            return
+//          }
+//          // 3
+//          else if ((position < 0) || (position > 180)) {
+//            return
+//          }
+//
+//          // 4
+//          // Send position to BLE Shield (if service exists and is connected)
+//          if let bleService = btDiscoverySharedInstance.bleService {
+//            bleService.writePosition(position)
+//            lastPosition = position
+//
+//            // 5
+//            // Start delay timer
+//            allowTX = false
+//            if timerTXDelay == nil {
+//              timerTXDelay = Timer.scheduledTimer(timeInterval: 0.1,
+//                target: self,
+//                selector: #selector(ViewController.timerTXDelayElapsed),
+//                userInfo: nil,
+//                repeats: false)
+//            }
+//          }
+//
+//    }
+//
 }

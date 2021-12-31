@@ -93,7 +93,7 @@ class BTService: NSObject, CBPeripheralDelegate {
   
   // Mark: - Private
   
-    func writePosition(_ position: UInt8) {
+    func writePosition(_ position: UInt8) { 
       // See if characteristic has been discovered before writing to it
       if let positionCharacteristic = self.positionCharacteristic {
           let data = Data(_: [position])
